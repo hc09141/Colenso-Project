@@ -8,9 +8,33 @@
       </span>
     </div><!-- /input-group -->
   </div>
+
+  <div class="btn-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default, active">Text</button>
+    <button type="button" class="btn btn-default">xQuery</button>
+
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Advanced Search Options
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Dropdown link</a></li>
+        <li><a href="#">Dropdown link</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 </div>
 <% end %>
+
 <div class="panel-body">
   <div class="well">
+    <% if @basexQuery %>
+      <%@basexQuery.each do |result|%>
+        <li><%= result %></li>
+      <% end %>
+    <% end %>
   </div>
 </div>
