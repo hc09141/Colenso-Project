@@ -1,0 +1,16 @@
+<%= form_tag("/search", method: :get, id: "browse_bar") do %>
+<div class="panel-body">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
+      <span class="input-group-btn">
+        <%= submit_tag "Search", class: "btn btn-default" %>
+      </span>
+    </div><!-- /input-group -->
+  </div>
+</div>
+<% end %>
+<div class="panel-body">
+  <div class="well">
+  </div>
+</div>
