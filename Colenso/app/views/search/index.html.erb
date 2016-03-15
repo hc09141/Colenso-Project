@@ -9,11 +9,18 @@
     </div><!-- /input-group -->
   </div>
 
-  <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default, active">Text</button>
-    <button type="button" class="btn btn-default">xQuery</button>
 
-    <div class="btn-group" role="group">
+  <%= radio_button_tag(:searchType, "Text", true, {class: "btn btn-default"}) %>
+  <%= label_tag(:text, "Text") %>
+  <%= radio_button_tag(:searchType, "xQuery")  %>
+  <%= label_tag(:xQuery, "xQuery") %>
+
+
+  <!-- <div class="btn-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default, active">Text</button>
+    <button type="button" class="btn btn-default">xQuery</button> -->
+
+    <!-- <div class="btn-group" role="group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Advanced Search Options
         <span class="caret"></span>
@@ -23,7 +30,7 @@
         <li><a href="#">Dropdown link</a></li>
       </ul>
     </div>
-  </div>
+  </div> -->
 
   <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 </div>
