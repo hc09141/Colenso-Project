@@ -36,7 +36,7 @@ class QueryBasex
     # Splits up phrases and operators
     words.each do |word|
       if word == "ADD" || word == "OR" || word == "NOT"
-        phrases.push("'#{phrase}' ")
+        phrases.push("'#{phrase}' ") if !phrase.empty?
         phrases.push("#{word} ")
         phrase = ""
       else
@@ -52,16 +52,16 @@ class QueryBasex
     for $file score $score in collection('Colenso_TEIs')
     [.contains text "
 
-    phrases.each do |phrase|
-      case phrase
-      when "AND"
+    phrases.each do |p|
+      case p
+      when "AND "
         textSearch << "ftand"
-      when "OR"
+      when "OR "
         textSearch << "ftor"
-      when "NOT"
+      when "NOT "
         textSearch << "ftnot"
       else
-        textSearch << phrase
+        textSearch << p
       end
     end
 
@@ -71,7 +71,7 @@ class QueryBasex
   end
 
   def formXQuery
-    xQuerySearch = 'declare namespace tei = "http://www.tei-c.org/ns/1.0"'
+    xQuerySearch = 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; '
     xQuerySearch << "#{@input}"
   end
 

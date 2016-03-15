@@ -1,39 +1,39 @@
 <%= form_tag("/search", method: :get, id: "browse_bar") do %>
-<div class="panel-body">
-  <div class="col-lg-6">
-    <div class="input-group">
-      <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
-      <span class="input-group-btn">
-        <%= submit_tag "Search", class: "btn btn-default" %>
-      </span>
-    </div><!-- /input-group -->
-  </div>
-
-
-  <%= radio_button_tag(:searchType, "Text", true, {class: "btn btn-default"}) %>
-  <%= label_tag(:text, "Text") %>
-  <%= radio_button_tag(:searchType, "xQuery")  %>
-  <%= label_tag(:xQuery, "xQuery") %>
-
-
-  <!-- <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default, active">Text</button>
-    <button type="button" class="btn btn-default">xQuery</button> -->
-
-    <!-- <div class="btn-group" role="group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Advanced Search Options
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Dropdown link</a></li>
-        <li><a href="#">Dropdown link</a></li>
-      </ul>
+  <div class="panel-body">
+    <div class="col-lg-6">
+      <div class="input-group">
+        <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
+        <span class="input-group-btn">
+          <%= submit_tag "Search", class: "btn btn-default" %>
+        </span>
+      </div><!-- /input-group -->
     </div>
-  </div> -->
 
-  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-</div>
+
+    <%= radio_button_tag(:searchType, "Text", true, {class: "btn btn-default"}) %>
+    <%= label_tag(:text, "Text") %>
+    <%= radio_button_tag(:searchType, "xQuery")  %>
+    <%= label_tag(:xQuery, "xQuery") %>
+
+
+    <!-- <div class="btn-group" role="group" aria-label="...">
+      <button type="button" class="btn btn-default, active">Text</button>
+      <button type="button" class="btn btn-default">xQuery</button> -->
+
+      <!-- <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Advanced Search Options
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Dropdown link</a></li>
+          <li><a href="#">Dropdown link</a></li>
+        </ul>
+      </div>
+    </div> -->
+
+    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+  </div>
 <% end %>
 
 <div class="panel-body">
