@@ -5,7 +5,7 @@ class SearchController < ApplicationController
     if params[:query]
       @data = params[:query]
       @searchType = params[:searchType]
-      @basexQuery = QueryBasex.new(@data, @searchType).call
+      @basexQuery = QueryBasex.new(@data, @searchType, nil).call
     end
   end
 end

@@ -1,8 +1,26 @@
+require_relative('folder_parser.rb')
+
 class QueryBasex
-  def initialize(input, searchType)
+  def initialize(input, searchType, directory)
     @session = BaseXClient::Session.new('localhost', 1984, 'admin', 'admin')
     @input = input
     @searchType = searchType
+    @directory = directory
+  end
+
+  def list()
+    # Creates query with directory
+    if @directory && !@directory.empty?
+      listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
+    else
+      listCommand = "XQUERY db:list('Colenso_TEIs')"
+    end
+
+    # Gets results
+    list = @session.execute(listCommand).split("\n");
+    @session.close
+
+    parser = FolderParser.new(@directory, list).parse
   end
 
   def call

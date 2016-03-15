@@ -1,11 +1,10 @@
+include ApplicationHelper
+
 class BrowseController < ApplicationController
 
   def index
-    #currentDirectory = ""
-  end
-
-  def list
-    #QueryBasex.new(currentDirectory).list
+    @currentDirectory = ""
+    @folders = QueryBasex.new(nil, nil, @currentDirectory).list
   end
 
 end
