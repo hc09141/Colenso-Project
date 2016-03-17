@@ -1,7 +1,13 @@
-<div class="btn-group, container" role="group">
+<% if !@file %>
+<ul class="list-group">
   <% @folders.keys.each do |folder| %>
-  <div>
-      <button type="button" class="btn btn-default" style="width:100%"><%= "#{folder}" %></button>
-    </div>
+    <% newDirectory = "#{@currentDirectory}" if !@currentDirectory.empty? %>
+    <% newDirectory << "/#{folder}"  if newDirectory %>
+    <% newDirectory = "#{folder}" if !newDirectory %>
+    <% puts newDirectory %>
+    <li><button><%= link_to "#{folder}", :path => newDirectory %></button></li>
   <% end %>
-</div>
+  </ul>
+<% else %>
+  <%= raw "#{@file}" %>
+<% end %>

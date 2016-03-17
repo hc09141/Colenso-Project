@@ -15,14 +15,14 @@ class FolderParser
   end
 
   def getDir(item)
-    if item[0] == '/'
-      start = 1
+    if !@path.empty?
+      start = @path.length + 1
     else
       start = 0
     end
     final = @path.length + 1
-    final += 1 until item[final + 1] == '/'
-    newDir = item[start .. final].titleize
+    final += 1 until item[final + 1] == '/' || final == item.length - 1
+    newDir = item[start .. final]
   end
 
 end

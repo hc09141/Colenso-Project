@@ -8,19 +8,45 @@ class QueryBasex
     @directory = directory
   end
 
-  def list()
-    # Creates query with directory
-    if @directory && !@directory.empty?
-      listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
+  def browse
+    if @directory.include?(".xml")
+      puts "display"
+      display
     else
-      listCommand = "XQUERY db:list('Colenso_TEIs')"
+      puts "list"
+      list
     end
+  end
 
-    # Gets results
-    list = @session.execute(listCommand).split("\n");
+  def display
+    letter = @session.execute("XQUERY db:open('Colenso_TEIs', '#{@directory}')")
     @session.close
+    letter
+  end
 
-    parser = FolderParser.new(@directory, list).parse
+  def list
+    begin
+      # Creates query with directory
+      puts "#{@directory}"
+      if @directory && !@directory.empty?
+        listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
+      else
+        listCommand = "XQUERY db:list('Colenso_TEIs')"
+      end
+
+      # Gets results
+      list = @session.execute(listCommand).split("\n");
+      @session.close
+      puts "#{@directory}"
+      puts list
+
+      parser = FolderParser.new(@directory, list).parse
+      return parser
+
+    rescue Exception => e
+      # print exception
+      puts e
+    end
   end
 
   def call
@@ -85,7 +111,9 @@ class QueryBasex
 
     textSearch << "using wildcards]
     order by $score descending
-    return string($file//tei:title)"
+    return string(<result>
+    <title>$file//tei:title</title>
+    <path>$file</path></result>)"
   end
 
   def formXQuery
