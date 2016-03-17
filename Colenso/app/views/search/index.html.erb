@@ -21,10 +21,13 @@
 
 <div class="panel-body">
   <div class="well">
-    <% if @basexQuery %>
-      <%@basexQuery.each do |result|%>
-        <li><%= result %></li>
-      <% end %>
+    <%= raw "#{@file}" if @file %>
+    <% if @basexQuery && !@file %>
+      <ul class="list-group">
+        <%@basexQuery.each_slice(2) do |title, path|
+          <li class="list-group-item"> <%= link_to "#{title}", path: path %></li>
+        <% end %>
+      </ul>
     <% end %>
   </div>
 </div>

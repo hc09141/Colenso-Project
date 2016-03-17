@@ -60,7 +60,6 @@ class QueryBasex
 
       query = @session.query(textSearch)
       results.push(query.next) while query.more
-
       query.close
       @session.close
 
@@ -111,9 +110,9 @@ class QueryBasex
 
     textSearch << "using wildcards]
     order by $score descending
-    return string(<result>
-    <title>$file//tei:title</title>
-    <path>$file</path></result>)"
+    return (<result>
+    {$file//tei:title}
+    <path>{db:path($file)}</path></result>)//text()"
   end
 
   def formXQuery
