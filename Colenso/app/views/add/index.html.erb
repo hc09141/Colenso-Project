@@ -1,0 +1,12 @@
+
+<div class = 'container'>
+  <div class = 'well'>
+  </div>
+
+  <div class = 'well'>
+    Choose a file to upload
+    <%= form_tag({action: :upload}, multipart: true) do %>
+      <%= file_field_tag 'File' %>
+    <% end %>
+  </div>
+</div>

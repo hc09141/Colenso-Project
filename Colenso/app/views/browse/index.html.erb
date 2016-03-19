@@ -5,9 +5,9 @@
     <% newDirectory << "/#{folder}"  if newDirectory %>
     <% newDirectory = "#{folder}" if !newDirectory %>
     <% puts newDirectory %>
-    <li><button><%= link_to "#{folder}", :path => newDirectory %></button></li>
+    <li><button><%= link_to "#{folder}", path: newDirectory, mode: 'display' %></button></li>
   <% end %>
   </ul>
 <% else %>
-  <%= raw "#{@file}" %>
+  <%= render "letter_display" if @file %>
 <% end %>

@@ -10,4 +10,8 @@ class SearchController < ApplicationController
       @file = QueryBasex.new(nil, nil, params[:path]).display
     end
   end
+
+  def create
+    send_data @file, filename: "#{params[:path].split('/').last}"
+  end
 end

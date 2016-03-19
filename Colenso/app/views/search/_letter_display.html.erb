@@ -1,0 +1,20 @@
+<%= button_to "Download", action: :create, path: params[:path] if params[:mode] == 'display' %>
+<%= link_to "Edit", mode: "edit", path: params[:path] if params[:mode] == 'display'%>
+
+<% if params[:mode] == 'display' %>
+<div class= "well">
+  <%= raw "#{@file}" %>
+</div>
+<% end %>
+
+<% if params[:mode] == 'edit' %>
+   <div class='well'>
+     <div class="input-group">
+       <%= link_to "Save", mode: "display", path: params[:path] %>
+       <%= link_to "Cancel", mode: "display", path: params[:path] %>
+       <textarea class="form-control">
+         <%= raw "#{@file}" %>
+       </textarea>
+     </div>
+   </div>
+<% end %>

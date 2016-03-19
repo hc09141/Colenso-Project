@@ -9,4 +9,8 @@ class BrowseController < ApplicationController
     @file = QueryBasex.new(nil, nil, @currentDirectory).display if @currentDirectory.include?(".xml")
   end
 
+  def create
+    send_data @file, filename: "#{params[:path].split('/').last}"
+  end
+
 end

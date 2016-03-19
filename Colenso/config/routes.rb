@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
     resources :browse
     resources :home
+    resources :add
     resources :search
 
   # Example resource route with options:
