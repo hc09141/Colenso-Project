@@ -1,13 +1,1 @@
-<% if !@file %>
-<ul class="list-group">
-  <% @folders.keys.each do |folder| %>
-    <% newDirectory = "#{@currentDirectory}" if !@currentDirectory.empty? %>
-    <% newDirectory << "/#{folder}"  if newDirectory %>
-    <% newDirectory = "#{folder}" if !newDirectory %>
-    <% puts newDirectory %>
-    <li><button><%= link_to "#{folder}", path: newDirectory, mode: 'display' %></button></li>
-  <% end %>
-  </ul>
-<% else %>
-  <%= render "letter_display" if @file %>
-<% end %>
+<%= render "browser" %>

@@ -1,12 +1,21 @@
+<%= form_tag("/add", method: :get) do %>
+  <div class = 'container'>
+    <div class = 'well'>
+      Choose a file to upload
+      <%= form_tag(multipart: true) do %>
+        <%= file_field_tag 'upload', accept: 'text/xml' %>
+      <% end %>
+    </div>
 
-<div class = 'container'>
-  <div class = 'well'>
-  </div>
+    <div class = 'well'>
+      <p>Choose where to store<p>
+      <p><%= @currentDirectory %><p>
+      <%= render "browse/browser" %>
+    </div>
 
-  <div class = 'well'>
-    Choose a file to upload
-    <%= form_tag({action: :upload}, multipart: true) do %>
-      <%= file_field_tag 'File' %>
-    <% end %>
+    <div class = 'well'>
+      Add to database
+      <%= submit_tag "Add new letter", class: "btn btn-default" %>
+    </div>
   </div>
-</div>
+<% end %>

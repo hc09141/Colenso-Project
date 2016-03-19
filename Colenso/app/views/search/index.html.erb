@@ -20,7 +20,7 @@
 <% end %>
 
 <div class="panel-body">
-    <%= render "/letter_display" if @file %>
+    <%= render "letter_display" if @file %>
     <% if @basexQuery && !@file %>
       <div class="well">
         <ul class="list-group">

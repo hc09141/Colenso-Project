@@ -1,11 +1,17 @@
 require_relative('folder_parser.rb')
 
 class QueryBasex
-  def initialize(input, searchType, directory)
+  def initialize(input, searchType, directory, newLetter)
     @session = BaseXClient::Session.new('localhost', 1984, 'admin', 'admin')
     @input = input
     @searchType = searchType
     @directory = directory
+    @newLetter = newLetter
+  end
+
+  def addLetter
+    @session.execute("XQUERY db:add('Colenso_TEIs', '#{@newLetter}', '#{@directory}')");
+    @session.close;
   end
 
   def browse
