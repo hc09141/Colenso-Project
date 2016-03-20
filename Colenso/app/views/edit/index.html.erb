@@ -1,0 +1,10 @@
+<div class='well'>
+  <div class="input-group">
+    <%= form_tag("/edit", action: :create, method: :post, id: "edit_box") do %>
+    <%= hidden_field_tag 'path', @path %>
+    <%= text_area_tag 'file', "#{@file}" %>
+    <%= submit_tag "Save" %>
+    <%= link_to "Cancel", mode: "display", path: params[:path] %>
+    <% end %>
+  </div>
+</div>

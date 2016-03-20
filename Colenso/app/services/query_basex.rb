@@ -10,8 +10,21 @@ class QueryBasex
   end
 
   def addLetter
-    @session.execute("XQUERY db:add('Colenso_TEIs', '#{@newLetter}', '#{@directory}')");
-    @session.close;
+    @session.execute("XQUERY db:add('Colenso_TEIs', '#{@newLetter}', '#{@directory}')")
+    @session.close
+  end
+
+  def editLetter
+    begin
+      puts "EDITTED"
+      puts @directory
+      puts @newLetter
+      @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', '#{@newLetter}')")
+      @session.close
+    rescue Exception => e
+      # print exception
+      puts e
+    end
   end
 
   def browse

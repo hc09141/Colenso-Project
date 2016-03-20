@@ -4,7 +4,10 @@ class AddController < ApplicationController
     @currentDirectory = "" if !params[:path]
     @currentDirectory = params[:path] if params[:path]
     @folders = QueryBasex.new(nil, nil, @currentDirectory, nil).browse
-    @newLetter = params[:upload] if params[:upload]
+    if params[:upload]
+      @newLetter = params[:upload]
+      QueryBasex.new(nil, nil, @currentDirectory, @newLetter).addLetter
+    end
   end
 
   def upload

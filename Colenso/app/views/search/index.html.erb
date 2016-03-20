@@ -1,33 +1,33 @@
 <%= form_tag("/search", method: :get, id: "browse_bar") do %>
-  <div class="panel-body">
-    <div class="col-lg-6">
-      <div class="input-group">
-        <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
-        <span class="input-group-btn">
-          <%= submit_tag "Search", class: "btn btn-default" %>
-        </span>
-      </div><!-- /input-group -->
+<div class="panel-body">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
+      <span class="input-group-btn">
+        <%= submit_tag "Search", class: "btn btn-default" %>
+      </span>
     </div>
-
-
-    <%= radio_button_tag(:searchType, "Text", true) %>
-    <%= label_tag(:text, "Text") %>
-    <%= radio_button_tag(:searchType, "xQuery")  %>
-    <%= label_tag(:xQuery, "xQuery") %>
-
-    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
   </div>
+
+  <%= radio_button_tag(:searchType, "Text", true) %>
+  <%= label_tag(:text, "Text") %>
+  <%= radio_button_tag(:searchType, "xQuery")  %>
+  <%= label_tag(:xQuery, "xQuery") %>
+
+  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+</div>
 <% end %>
 
 <div class="panel-body">
-    <%= render "letter_display" if @file %>
-    <% if @basexQuery && !@file %>
-      <div class="well">
-        <ul class="list-group">
-          <% @basexQuery.each_slice(2) do |title, path| %>
-            <li class="list-group-item"> <%= link_to "#{title}", path: path, mode: 'display' %></li>
-          <% end %>
-        </ul>
+  <%= render "letter_display" if @file %>
+  <% if @basexQuery && !@file %>
+  <div class="well">
+    <ul class="list-group">
+      <% @basexQuery.each_slice(2) do |title, path| %>
+      <li class="list-group-item">
+        <%= link_to "#{title}", path: path, mode: 'display' %></li>
+      <% end %>
+    </ul>
     <% end %>
   </div>
 </div>

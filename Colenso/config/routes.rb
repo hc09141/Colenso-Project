@@ -18,6 +18,9 @@ Rails.application.routes.draw do
     resources :home
     resources :add
     resources :search
+    resources :edit
+
+    # post "/edit" => "search#edit"
 
   # Example resource route with options:
   #   resources :products do
