@@ -19,7 +19,7 @@ class QueryBasex
       puts "EDITTED"
       puts @directory
       puts @newLetter
-      @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', '#{@newLetter}')")
+      @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " +  @newLetter + ')')
       @session.close
     rescue Exception => e
       # print exception

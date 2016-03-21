@@ -1,8 +1,8 @@
-<div class='well'>
-  <div class="input-group">
+<div class='well col-xs-12'>
+  <div class="input-group col-xs-12">
     <%= form_tag("/edit", action: :create, method: :post, id: "edit_box") do %>
     <%= hidden_field_tag 'path', @path %>
-    <%= text_area_tag 'file', "#{@file}" %>
+    <%= text_area_tag 'file', "#{@file}", class:'well well-lg col-xs-12', style:"height:60vh" %>
     <%= submit_tag "Save" %>
     <%= link_to "Cancel", mode: "display", path: params[:path] %>
     <% end %>
