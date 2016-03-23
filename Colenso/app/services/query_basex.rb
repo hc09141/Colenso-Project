@@ -35,6 +35,7 @@ class QueryBasex
 
   def editLetter
     begin
+      @session.execute("XQUERY validate:xsd(#{@newLetter}, 'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd')")
       @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " + @newLetter + ')')
       @session.close
     rescue Exception => e
