@@ -12,8 +12,9 @@ class QueryBasex
 
   def bulkDownload
     puts 'BULK'
-    search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
-    let $files:= #{formTextQuery(true)}"
+    search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';"
+    search << "let $files:= #{formTextQuery(true)}" if @searchType == 'Text'
+    search << "left $files:= #{formXQuery(true)}" if @searchType == 'xQuery'
 
     t = Tempfile.new('search-results')
     Zip::OutputStream.open(t.path) do |zos|
@@ -86,7 +87,8 @@ class QueryBasex
   def call
     textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0'; "
     textSearch << formTextQuery(false) if @searchType == 'Text'
-    textSearch << formXQuery if @searchType == 'xQuery'
+    textSearch << formXQuery(false) if @searchType == 'xQuery'
+    puts textSearch
     results = []
 
     query = @session.query(textSearch)
@@ -152,7 +154,17 @@ class QueryBasex
     end
   end
 
-  def formXQuery
-    xQuerySearch = @input.to_s
+  def formXQuery(returnFile)
+    xQuerySearch = "for $file in collection('Colenso_TEIs') where "
+    xQuerySearch << @input.to_s
+    if !returnFile
+      xQuerySearch << " return <result>
+      {$file//title}
+      <path>{db:path($file)}</path></result>//text()"
+    else
+      xQuerySearch << " return <result><name>{file:name(db:path($file))}</name>
+        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
+      return $files"
+    end
   end
 end
