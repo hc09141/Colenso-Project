@@ -15,6 +15,7 @@ class SearchController < ApplicationController
     if params[:mode] == 'download'
       QueryBasex.new(params[:query], params[:searchType], nil, nil).bulkDownload
       redirect_to action: 'index', query: params[:query], searchType: params[:searchType]
+      send_file "/Users/Hannah/Desktop/archive.zip"
     else
       send_data @file, filename: "#{params[:path].split('/').last}"
     end

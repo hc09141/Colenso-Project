@@ -23,7 +23,6 @@ class QueryBasex
       query = @session.query(search)
       zipfile.add(query.next, query.next) while query.more
       query.close
-      zipfile.get_output_stream("myFile") { |os| os.write "myFile contains just this" }
     end
     @session.close
   end
