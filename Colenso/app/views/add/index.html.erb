@@ -3,7 +3,7 @@
     <div class = 'well'>
       Choose a file to upload
       <%= form_tag(multipart: true) do %>
-        <%= file_field_tag 'upload', accept: 'text/xml' %>
+        <%= file_field_tag 'upload', accept: 'text/xml', multipart: true %>
       <% end %>
     </div>
 

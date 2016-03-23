@@ -19,7 +19,6 @@ Rails.application.routes.draw do
     resources :add
     resources :search
     resources :edit
-
     # post "/edit" => "search#edit"
 
   # Example resource route with options:

@@ -1,4 +1,5 @@
 require_relative('folder_parser.rb')
+require 'zip'
 
 class QueryBasex
   def initialize(input, searchType, directory, newLetter)
@@ -7,6 +8,24 @@ class QueryBasex
     @searchType = searchType
     @directory = directory
     @newLetter = newLetter
+  end
+
+  def bulkDownload
+    puts "BULK"
+    search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
+    let $files:= #{formTextQuery(true)}"
+
+    puts search
+
+    zipfile_name = "/Users/Hannah/Desktop/archive.zip"
+
+    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+      query = @session.query(search)
+      zipfile.add(query.next, query.next) while query.more
+      query.close
+      zipfile.get_output_stream("myFile") { |os| os.write "myFile contains just this" }
+    end
+    @session.close
   end
 
   def addLetter
@@ -70,11 +89,9 @@ class QueryBasex
 
   def call
     begin
-      textSearch = formTextQuery if @searchType == "Text"
-      textSearch = formXQuery if @searchType == "xQuery"
-
-      puts textSearch
-
+      textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0'; "
+      textSearch << formTextQuery(false) if @searchType == "Text"
+      textSearch << formXQuery if @searchType == "xQuery"
       results = []
 
       query = @session.query(textSearch)
@@ -89,7 +106,7 @@ class QueryBasex
       end
   end
 
-  def formTextQuery
+  def formTextQuery(returnFile)
     puts "Doing a text query"
     words = @input.split(" ")
     phrase = ""
@@ -110,8 +127,7 @@ class QueryBasex
 
     # Forms xQuerySearch
 
-    textSearch = "declare namespace tei = 'http://www.tei-c.org/ns/1.0';
-    for $file score $score in collection('Colenso_TEIs')
+    textSearch = "for $file score $score in collection('Colenso_TEIs')
     [.contains text "
 
     phrases.each do |p|
@@ -127,16 +143,24 @@ class QueryBasex
       end
     end
 
-    textSearch << "using wildcards]
-    order by $score descending
-    return (<result>
-    {$file//tei:title}
-    <path>{db:path($file)}</path></result>)//text()"
+    if !returnFile
+      textSearch << "using wildcards]
+      order by $score descending
+      return (<result>
+      {$file//title}
+      <path>{db:path($file)}</path></result>)//text()"
+    else
+      textSearch << "using wildcards]
+        order by $score descending
+        return <result><name>{file:name(db:path($file))}</name>
+        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
+      return $files"
+    end
+
   end
 
   def formXQuery
-    xQuerySearch = 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; '
-    xQuerySearch << "#{@input}"
+    xQuerySearch = "#{@input}"
   end
 
 end

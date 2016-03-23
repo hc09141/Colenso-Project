@@ -21,6 +21,7 @@
 <div class="panel-body">
   <%= render "layouts/letter_display" if @file %>
   <% if @basexQuery && !@file %>
+  <%= button_to "Download Results", query: params[:query], searchType: params[:searchType], mode: 'download' %>
   <div class="well">
     <ul class="list-group">
       <% @basexQuery.each_slice(2) do |title, path| %>
