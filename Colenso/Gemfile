@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.2.0'
 # zip files
 gem 'rubyzip', '>= 1.0.0'
+gem 'zip-zip'
 # file uploading
 gem 'carrierwave'
 
