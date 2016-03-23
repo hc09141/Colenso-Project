@@ -11,10 +11,9 @@ class QueryBasex
   end
 
   def bulkDownload
-    puts 'BULK'
     search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';"
     search << "let $files:= #{formTextQuery(true)}" if @searchType == 'Text'
-    search << "left $files:= #{formXQuery(true)}" if @searchType == 'xQuery'
+    search << "let $files:= #{formXQuery(true)}" if @searchType == 'xQuery'
 
     t = Tempfile.new('search-results')
     Zip::OutputStream.open(t.path) do |zos|
@@ -35,14 +34,13 @@ class QueryBasex
   end
 
   def editLetter
-    puts 'EDITTED'
-    puts @directory
-    puts @newLetter
-    @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " + @newLetter + ')')
-    @session.close
-  rescue Exception => e
-    # print exception
-    puts e
+    begin
+      @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " + @newLetter + ')')
+      @session.close
+    rescue Exception => e
+      # print exception
+      puts e
+    end
   end
 
   def browse
@@ -62,48 +60,66 @@ class QueryBasex
   end
 
   def list
-    # Creates query with directory
-    puts @directory.to_s
-    if @directory && !@directory.empty?
-      listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
-    else
-      listCommand = "XQUERY db:list('Colenso_TEIs')"
+    begin
+      puts @directory.to_s
+      if @directory && !@directory.empty?
+        listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
+      else
+        listCommand = "XQUERY db:list('Colenso_TEIs')"
+      end
+
+      # Gets results
+      list = @session.execute(listCommand).split("\n")
+      @session.close
+      puts @directory.to_s
+      puts list
+
+      parser = FolderParser.new(@directory, list).parse
+      return parser
+
+    rescue Exception => e
+      # print exception
+      puts e
     end
-
-    # Gets results
-    list = @session.execute(listCommand).split("\n")
-    @session.close
-    puts @directory.to_s
-    puts list
-
-    parser = FolderParser.new(@directory, list).parse
-    return parser
-
-  rescue Exception => e
-    # print exception
-    puts e
   end
 
   def call
-    textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0'; "
-    textSearch << formTextQuery(false) if @searchType == 'Text'
-    textSearch << formXQuery(false) if @searchType == 'xQuery'
-    puts textSearch
-    results = []
+    begin
+      textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0'; "
+      textSearch << formTextQuery(false) if @searchType == 'Text'
+      textSearch << formXPathQuery(false) if @searchType == 'xPath'
+      textSearch << formXQuery(false) if @searchType == 'xQuery'
+      puts textSearch
+      results = []
 
-    query = @session.query(textSearch)
-    results.push(query.next) while query.more
-    query.close
-    @session.close
+      query = @session.query(textSearch)
+      results.push(query.next) while query.more
+      query.close
+      @session.close
 
-    return results
-  rescue Exception => e
-    # print exception
-    puts e
+      return results
+    rescue Exception => e
+      # print exception
+      puts e
+    end
+  end
+
+  def formXPathQuery(returnFile)
+    search = "for $file in collection('Colenso_TEIs') where
+        $file#{@input} "
+      if !returnFile
+        search << "return (<result>
+        {$file//title}
+        <path>{db:path($file)}</path></result>)//text()"
+      else
+        search << "return <result><name>{file:name(db:path($file))}</name>
+        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
+      return $files"
+      end
+      search
   end
 
   def formTextQuery(returnFile)
-    puts 'Doing a text query'
     words = @input.split(' ')
     phrase = ''
     phrases = []

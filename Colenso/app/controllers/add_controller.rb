@@ -8,6 +8,7 @@ class AddController < ApplicationController
 
     if params[:upload]
       @newLetter = params[:upload]
+      puts @newLetter
       QueryBasex.new(nil, nil, @currentDirectory, @newLetter).addLetter
     end
   end
