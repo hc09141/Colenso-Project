@@ -22,18 +22,23 @@
 <% end %>
 
 <div class = 'container'>
-  <%= "Showing results for '#{params[:query]}'" if params[:query]  %>
+  <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && !@basexQuery.empty?  %>
+  <%= "There are no results for '#{params[:query]}'" if params[:query] && @basexQuery.empty? %>
 </div>
 
 <div class="panel-body">
   <%= render "layouts/letter_display" if @file %>
-  <% if @basexQuery && !@file %>
+  <% if @basexQuery && !@basexQuery.empty? && !@file %>
   <%= button_to "Download Results", query: params[:query], searchType: params[:searchType], mode: 'download' %>
   <div class="well">
     <ul class="list-group">
-      <% @basexQuery.each_slice(2) do |title, path| %>
+      <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
       <li class="list-group-item">
-        <%= link_to "#{title}", path: path, mode: 'display' %></li>
+        <%= link_to "#{title}", path: path, mode: 'display' %>
+          <%= "#{path}" %>
+        <%= "#{author}" %>
+        <%= "#{excerpt}" %>
+        </li>
       <% end %>
     </ul>
     <% end %>

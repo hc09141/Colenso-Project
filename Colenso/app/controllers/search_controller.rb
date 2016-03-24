@@ -8,8 +8,11 @@ class SearchController < ApplicationController
     if params[:query]
         @data = params[:query]
         @searchType = params[:searchType]
+        @searchTime = Time.now
         @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
         Query.create(content: @data)
+        @resultsCount = @basexQuery.count / 3
+        @searchTime = Time.now - @searchTime
     elsif params[:path]
       @file = QueryBasex.new(nil, nil, params[:path], nil).display
     end

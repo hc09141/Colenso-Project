@@ -115,8 +115,11 @@ class QueryBasex
         $file#{@input} "
       if !returnFile
         search << "return (<result>
-        {$file//title}
-        <path>{db:path($file)}</path></result>)//text()"
+        <name>{$file//title}</name>
+        <path>{db:path($file)}</path>
+        <author>Author: {($file//author)[1]//text()}</author>
+        <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
+        </result>)//text()"
       else
         search << "return <result><name>{file:name(db:path($file))}</name>
         <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
@@ -165,8 +168,11 @@ class QueryBasex
       textSearch << "using wildcards]
       order by $score descending
       return (<result>
-      {$file//title}
-      <path>{db:path($file)}</path></result>)//text()"
+         <name>{$file//title}</name>
+         <path>{db:path($file)}</path>
+         <author>Author: {($file//author)[1]//text()}</author>
+         <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
+         </result>)//text()"
     else
       textSearch << "using wildcards]
         order by $score descending
