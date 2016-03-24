@@ -6,13 +6,12 @@ class AddController < ApplicationController
     @currentDirectory = params[:path] if params[:path]
     @folders = QueryBasex.new(nil, nil, @currentDirectory, nil).browse
 
-    if params[:upload]
-      @newLetter = params[:upload]
-      puts @newLetter
-      QueryBasex.new(nil, nil, @currentDirectory, @newLetter).addLetter
-    end
-  end
+ end
 
-  def upload
+  def create
+    newLetter = params[:upload].original_filename
+    input = params[:upload].read
+    QueryBasex.new(input, nil, @currentDirectory, newLetter).addLetter
+    redirect_to action: 'index'
   end
 end

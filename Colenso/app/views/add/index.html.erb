@@ -1,16 +1,8 @@
-<%= form_tag("/add", method: :get) do %>
+<%= form_tag({controller: 'add', method: :get}, {multipart: true}) do %>
   <div class = 'container'>
     <div class = 'well'>
       Choose a file to upload
-      <%= form_tag(multipart: true) do %>
-        <%= file_field_tag 'upload', accept: 'text/xml', multipart: true %>
-      <% end %>
-    </div>
-
-    <div class = 'well'>
-      <p>Choose where to store<p>
-      <p><%= @currentDirectory %><p>
-      <%= render "browse/browser" %>
+        <%= file_field_tag 'upload', accept: 'text/xml' %>
     </div>
 
     <div class = 'well'>

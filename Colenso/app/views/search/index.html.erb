@@ -4,7 +4,8 @@
     <div class="input-group">
       <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search for..."} %>
       <span class="input-group-btn">
-        <%= submit_tag "Search", class: "btn btn-default" %>
+        <%= submit_tag "Nested Search", class: "btn btn-default" if params[:query] %>
+        <%= submit_tag "New Search", class: "btn btn-default" %>
       </span>
     </div>
   </div>
@@ -19,6 +20,10 @@
   <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 </div>
 <% end %>
+
+<div class = 'container'>
+  <%= "Showing results for '#{params[:query]}'" if params[:query]  %>
+</div>
 
 <div class="panel-body">
   <%= render "layouts/letter_display" if @file %>

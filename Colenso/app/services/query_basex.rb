@@ -29,7 +29,12 @@ class QueryBasex
   end
 
   def addLetter
-    @session.execute("XQUERY db:add('Colenso_TEIs', '#{@newLetter}', '#{@directory}')")
+    t = Tempfile.new(@newLetter)
+    t.binmode
+    t.write(@input)
+    t.close
+
+    @session.execute("XQUERY db:add('Colenso_TEIs', '#{t.path}', '#{@directory}/#{@newLetter}')")
     @session.close
   end
 
@@ -37,11 +42,11 @@ class QueryBasex
     begin
       @session.execute("XQUERY validate:xsd(#{@newLetter}, 'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd')")
       @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " + @newLetter + ')')
-      @session.close
     rescue Exception => e
       # print exception
       puts e
     end
+    @session.close
   end
 
   def browse

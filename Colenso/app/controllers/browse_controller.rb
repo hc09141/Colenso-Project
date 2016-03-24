@@ -7,6 +7,7 @@ class BrowseController < ApplicationController
     @currentDirectory = params[:path] if params[:path]
     @folders = QueryBasex.new(nil, nil, @currentDirectory, nil).browse
     @file = QueryBasex.new(nil, nil, @currentDirectory, nil).display if @currentDirectory.include?(".xml")
+    puts "FILE: #{@file}"
   end
 
   def create

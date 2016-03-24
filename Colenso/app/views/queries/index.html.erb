@@ -1,0 +1,5 @@
+<ul>
+  <% @queries.each do |q| %>
+    <%= "#{q.created_at}   #{q.content}" %>
+  <% end %>
+</ul>

@@ -1,0 +1,9 @@
+<% if !@file %>
+<ul class="list-group">
+  <% @folders.keys.each do |folder| %>
+    <li><button><%= link_to "#{folder}", path: @currentDirectory + "/" + folder.chomp, mode: 'display' %></button></li>
+  <% end %>
+  </ul>
+<% else %>
+  <%= render "layouts/letter_display" if @file %>
+<% end %>

@@ -16,7 +16,7 @@ class FolderParser
 
   def getDir(item)
     if !@path.empty?
-      start = @path.length + 1
+      start = @path.length
     else
       start = 0
     end
