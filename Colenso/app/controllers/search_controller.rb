@@ -5,7 +5,7 @@ class SearchController < ApplicationController
 
 
   def index
-    if params[:query]
+    if params[:query] && !params[:query].empty?
         @data = params[:query]
         @searchType = params[:searchType]
         @searchTime = Time.now
