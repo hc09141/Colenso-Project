@@ -9,7 +9,7 @@ class SearchController < ApplicationController
         @searchType = params[:searchType]
         @searchTime = Time.now
         @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
-        Query.create(content: @data)
+        current_user.queries.create(content: @data)
         @resultsCount = @basexQuery.count / 3
         @searchTime = Time.now - @searchTime
     elsif params[:path]
