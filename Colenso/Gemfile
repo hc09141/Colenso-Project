@@ -29,6 +29,8 @@ gem 'rubyzip', '>= 1.0.0'
 gem 'zip-zip'
 # file uploading
 gem 'carrierwave'
+# user authentication
+gem 'devise'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
