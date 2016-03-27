@@ -2,7 +2,12 @@
 <div class="panel-body">
   <div class="col-lg-6">
     <div class="input-group">
-      <%= text_field_tag "query", nil, {class: "form-control", placeholder: "For XQuery searches, the format is: for $file in collection('Colenso_TEIs')  ... Your query here ...  return $file"} %>
+      <div id='basic_search' class="expand">
+        <%= text_field_tag "query", nil, {class: "form-control", placeholder: "Search ..."} %>
+      </div>
+      <div class='collapse' id='xQuery_search'>
+        <%= render 'xQueryForm' %>
+      </div>
       <span class="input-group-btn">
         <%= submit_tag "Nested Search", class: "btn btn-default" if params[:query] %>
         <%= submit_tag "New Search", class: "btn btn-default" %>
@@ -10,53 +15,54 @@
     </div>
   </div>
 
-  <% if !params[:searchType] || params[:searchType] == 'Text' %>
-    <%= radio_button_tag(:searchType, "Text", true) %>
-  <% else %>
-    <%= radio_button_tag(:searchType, "Text") %>
-  <% end %>
-  <%= label_tag(:text, "Text") %>
-
-  <% if params[:searchType] && params[:searchType] == 'xPath' %>
-    <%= radio_button_tag(:searchType, "xPath", true) %>
-  <% else %>
-    <%= radio_button_tag(:searchType, "xPath") %>
-  <% end %>
-  <%= label_tag(:xPath, "xPath") %>
-
-  <% if params[:searchType] && params[:searchType] == 'xQuery' %>
-    <%= radio_button_tag(:searchType, "xQuery", true) %>
-  <% else %>
-    <%= radio_button_tag(:searchType, "xPath") %>
-  <% end %>
-  <%= label_tag(:xPath, "xQuery") %>
+  <div class="btn-group" role="group">
+    <%= radio_button_tag :searchType, "Text", true, class: "btn btn-default" %>
+    <%= label_tag :Text, 'Text' %>
+    <%= radio_button_tag :searchType, "xPath"  %>
+    <%= label_tag :xPath, 'xPath' %>
+    <%= radio_button_tag :searchType, "xQuery" %>
+    <%= label_tag :xQuery, 'xQuery' %>
+  </div>
 
   <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 </div>
 <% end %>
 
 <% if params[:query] && !params[:query].empty? %>
-  <div class = 'container'>
-    <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && !@basexQuery.empty?  %>
-    <%= "There are no results for '#{params[:query]}'" if params[:query] && @basexQuery.empty? %>
-  </div>
+<div class='container'>
+  <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && !@basexQuery.empty?  %>
+  <%= "There are no results for '#{params[:query]}'" if params[:query] && @basexQuery.empty? %>
+</div>
 
-  <div class="panel-body">
-    <%= render "layouts/letter_display" if @file %>
-    <% if @basexQuery && !@basexQuery.empty? && !@file %>
-    <%= button_to "Download Results", query: params[:query], searchType: params[:searchType], mode: 'download' %>
-    <div class="well">
-      <ul class="list-group">
-        <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
-        <li class="list-group-item">
-          <%= link_to "#{title}", path: path, mode: 'display' %>
-            <%= "#{path}" %>
-          <%= "#{author}" %>
-          <%= "#{excerpt}" %>
-          </li>
-        <% end %>
-      </ul>
+<div class="panel-body">
+  <%= render "layouts/letter_display" if @file %>
+  <% if @basexQuery && !@basexQuery.empty? && !@file %>
+  <%= button_to "Download Results", query: params[:query], searchType: params[:searchType], mode: 'download' %>
+  <div class="well">
+    <ul class="list-group">
+      <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
+      <li class="list-group-item">
+        <%= link_to "#{title}", path: path, mode: 'display' %>
+        <%= "#{path}" %>
+        <%= "#{author}" %>
+        <%= "#{excerpt}" %>
+      </li>
       <% end %>
-    </div>
+    </ul>
+    <% end %>
   </div>
+</div>
 <% end %>
+
+<script>
+  $('#browse_bar input').on('change', function () {
+    var type = $('input[name=searchType]:checked', '#browse_bar').val();
+    if (type == "Text" || type == 'xPath') {
+      $('#basic_search').attr("class", "expand");
+      $('#xQuery_search').attr("class", "collapse");
+    } else if (type == "xQuery") {
+      $('#basic_search').attr("class", "collapse");
+      $('#xQuery_search').attr("class", "expand");
+    }
+  });
+</script>

@@ -38,14 +38,14 @@
       <% @users.each do |u| %>
       <%= 'Searches by #{u.name}' %>
       <ul>
-      <% u.queries.each do |q| %>
-      <li>
-        <%= "#{q.created_at}   #{q.content}" %>
-      </li>
+        <% u.queries.each do |q| %>
+        <li>
+          <%= "#{q.created_at}   #{q.content}" %>
+        </li>
+        <% end %>
+      </ul>
       <% end %>
-    </ul>
-      <% end %>
-    </ul>
-    <% end %>
-  </div>
+  </ul>
+  <% end %>
+</div>
 </div>

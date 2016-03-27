@@ -4,9 +4,11 @@ class SearchController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if params[:query] && !params[:query].empty?
+    if params[:query] && !params[:query].empty? && params[:commit]
         @data = params[:query]
         @searchType = params[:searchType]
+        @searchType = 'Text' if !@searchType || @searchType.empty?
+        byebug
         @searchTime = Time.now
         @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
         current_user.queries.create(content: @data)
