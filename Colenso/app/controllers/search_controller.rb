@@ -4,18 +4,21 @@ class SearchController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if params[:query] && !params[:query].empty? && params[:commit]
+    if params[:query] && !params[:query].empty?
+      byebug
         @data = params[:query]
         @searchType = params[:searchType]
         @searchType = 'Text' if !@searchType || @searchType.empty?
-        byebug
         @searchTime = Time.now
+        byebug
         @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
+        byebug
         current_user.queries.create(content: @data)
-        @resultsCount = @basexQuery.count / 3
+        @resultsCount = @basexQuery.count / 3 if @basexQuery
         @searchTime = Time.now - @searchTime
     elsif params[:path]
       @file = QueryBasex.new(nil, nil, params[:path], nil).display
+      byebug
     end
   end
 

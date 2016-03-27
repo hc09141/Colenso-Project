@@ -1,3 +1,4 @@
+<search>
 <%= form_tag("/search", method: :get, id: "browse_bar") do %>
 <div class="panel-body">
   <div class="col-lg-6">
@@ -30,14 +31,14 @@
 
 <% if params[:query] && !params[:query].empty? %>
 <div class='container'>
-  <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && !@basexQuery.empty?  %>
-  <%= "There are no results for '#{params[:query]}'" if params[:query] && @basexQuery.empty? %>
+  <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && @basexQuery && !@basexQuery.empty?  %>
+  <%= "There are no results for '#{params[:query]}'" if params[:query] && (!@basexQuery || @basexQuery.empty?) %>
 </div>
 
 <div class="panel-body">
   <%= render "layouts/letter_display" if @file %>
   <% if @basexQuery && !@basexQuery.empty? && !@file %>
-  <%= button_to "Download Results", query: params[:query], searchType: params[:searchType], mode: 'download' %>
+  <%= button_to "Download Results", {query: params[:query], searchType: params[:searchType], mode: 'download'}, class: 'btn btn-default' %>
   <div class="well">
     <ul class="list-group">
       <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
@@ -66,3 +67,4 @@
     }
   });
 </script>
+</search>

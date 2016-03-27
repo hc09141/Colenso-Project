@@ -1,9 +1,13 @@
 <% if !@file %>
-<ul class="list-group">
+  <div class='container'>
   <% @folders.keys.each do |folder| %>
-    <li><button><%= link_to "#{folder}", path: @currentDirectory + "/" + folder.chomp, mode: 'display' %></button></li>
+  <div class="btn-group btn-group-justified" role="group">
+    <div class="btn-group" role="group">
+      <%= link_to "#{folder}", {path: @currentDirectory + "/" + folder.chomp, mode: 'display'}, class: 'btn btn-default' %>
+    </div>
+  </div>
   <% end %>
-  </ul>
+  </div>
 <% else %>
-  <%= render "layouts/letter_display" if @file %>
+<%= render "layouts/letter_display" if @file %>
 <% end %>

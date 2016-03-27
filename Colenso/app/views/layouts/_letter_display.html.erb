@@ -1,8 +1,19 @@
-<%= button_to "Download", action: :create, path: params[:path] if params[:mode] == 'display' %>
-<%= link_to "Edit", mode: "edit", path: params[:path], controller: "edit", id: 'editor' if params[:mode] == 'display'%>
+<display>
+  <div class='container'>
+
+    <div class="btn-group btn-group-justified" role="group">
+      <div class="btn-group" role="group">
+        <%= button_to "Download", {action: :create, path: params[:path]}, class: 'btn btn-default' if params[:mode] == 'display' %>
+      </div>
+      <div class="btn-group" role="group">
+        <%= link_to "<i class='glyphicon glyphicon-pencil'></i> Edit".html_safe, {mode: "edit", path: params[:path], controller: "edit", id: 'editor'}, class: 'btn btn-default' if params[:mode] == 'display'%>
+      </div>
+    </div>
 
 <% if params[:mode] == 'display' %>
 <div class="well">
   <%= raw "#{@file}" %>
 </div>
 <% end %>
+</div>
+</display>
