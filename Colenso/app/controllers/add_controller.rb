@@ -14,10 +14,8 @@ class AddController < ApplicationController
     if params[:stage] == 'add'
       @newLetter = params[:upload].original_filename
       @input = params[:upload].read
-      byebug
       QueryBasex.new(@input, nil, params[:path], @newLetter).addLetter
-      byebug
     end
-    redirect_to action: 'index', stage: params[:stage], path: params[:path], uploadName: params[:upload].original_filename
+    redirect_to action: 'index', stage: params[:stage], path: params[:path]
   end
 end

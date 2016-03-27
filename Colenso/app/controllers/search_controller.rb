@@ -5,14 +5,11 @@ class SearchController < ApplicationController
 
   def index
     if params[:query] && !params[:query].empty?
-      byebug
         @data = params[:query]
         @searchType = params[:searchType]
         @searchType = 'Text' if !@searchType || @searchType.empty?
         @searchTime = Time.now
-        byebug
         @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
-        byebug
         current_user.queries.create(content: @data)
         @resultsCount = @basexQuery.count / 3 if @basexQuery
         @searchTime = Time.now - @searchTime

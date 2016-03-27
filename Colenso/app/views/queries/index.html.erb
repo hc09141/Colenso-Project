@@ -1,51 +1,57 @@
-<div class='container'>
-  <div class="btn-group btn-group-justified" role="group">
-    <div class="btn-group" role="group">
-      <%= link_to("My Searches", { action: "index", option: 'current' }, class: "btn btn-default") %>
+<queries>
+  <div class='container'>
+    <div class="btn-group btn-group-justified" role="group">
+      <div class="btn-group" role="group">
+        <%= link_to("My Searches", { action: "index", option: 'current' }, class: "btn btn-default") %>
+      </div>
+      <div class="btn-group" role="group">
+        <%= link_to("All Searches (by time)", { action: "index", option: 'all-time' }, class: "btn btn-default") %>
+      </div>
+      <div class="btn-group" role="group">
+        <%= link_to("All Searches (by user)", { action: "index", option: 'all-user' }, class: "btn btn-default") %>
+      </div>
     </div>
-    <div class="btn-group" role="group">
-      <%= link_to("All Searches (by time)", { action: "index", option: 'all-time' }, class: "btn btn-default") %>
-    </div>
-    <div class="btn-group" role="group">
-      <%= link_to("All Searches (by user)", { action: "index", option: 'all-user' }, class: "btn btn-default") %>
-    </div>
-  </div>
 
-  <div>
-    <% if params[:option] == 'current' %>
-    <% if signed_in? %>
-    <%= "Showing searches for #{@username}" %>
-    <ul>
-      <% current_user.queries.each do |q| %>
-      <li><%= "#{q.created_at}   #{q.content}" %>
-      <li>
-        <% end %>
-    </ul>
-  <% else %>
-    You are not logged in, to see your searches please log in
-    <% end %>
-
-    <% elsif params[:option] == 'all-time' %>
-    <ul>
-      <% @queries.each do |q| %>
-      <li><%= "#{q.created_at}   #{q.content}" %>
-      <li>
-        <% end %>
-    </ul>
-
-    <% elsif params[:option] == 'all-user' %>
-    <ul>
-      <% @users.each do |u| %>
-      <%= 'Searches by #{u.name}' %>
-      <ul>
-        <% u.queries.each do |q| %>
-        <li>
-          <%= "#{q.created_at}   #{q.content}" %>
-        </li>
-        <% end %>
+    <div>
+      <% if !params[:option] || params[:option] == 'current' %>
+      <% if signed_in? %>
+      <%= "Showing searches for #{@username}" %>
+      <div class='well'>
+        <ul>
+          <% current_user.queries.each do |q| %>
+          <li><%= "#{q.created_at}   #{q.content}" %></li>
+          <% end %>
+        </div>
       </ul>
+    <% else %>
+      You are not logged in, to see your searches please log in
       <% end %>
-  </ul>
-  <% end %>
+
+      <% elsif params[:option] == 'all-time' %>
+      <div class='well'>
+        <ul>
+          <% @queries.each do |q| %>
+          <li><%= "#{q.created_at}   #{q.content}" %></li>
+          <% end %>
+        </ul>
+      </div>
+
+      <% elsif params[:option] == 'all-user' %>
+      <div class='well'>
+        <ul>
+          <% @users.each do |u| %>
+          <%= 'Searches by #{u.name}' %>
+          <ul>
+            <% u.queries.each do |q| %>
+            <li>
+              <%= "#{q.created_at}   #{q.content}" %>
+            </li>
+            <% end %>
+          </ul>
+          <% end %>
+      </ul>
+    </div>
+    <% end %>
+  </div>
 </div>
-</div>
+</queries>

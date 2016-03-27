@@ -117,7 +117,7 @@ class QueryBasex
         search << "return (<result>
         <name>{$file//title}</name>
         <path>{db:path($file)}</path>
-        <author>Author: {($file//author)[1]//text()}</author>
+        <author> by {($file//author)[1]//text()}</author>
         <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
         </result>)//text()"
       else
@@ -170,7 +170,7 @@ class QueryBasex
       return (<result>
          <name>{$file//title}</name>
          <path>{db:path($file)}</path>
-         <author>Author: {($file//author)[1]//text()}</author>
+         <author> by {($file//author)[1]//text()}</author>
          <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
          </result>)//text()"
     else
@@ -189,7 +189,7 @@ class QueryBasex
       xQuerySearch << " return (<result>
       <name>{$file//title}</name>
       <path>{db:path($file)}</path>
-      <author>Author: {($file//author)[1]//text()}</author>
+      <author> by {($file//author)[1]//text()}</author>
       <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
       </result>)//text()"
     else

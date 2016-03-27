@@ -1,13 +1,12 @@
 <% if !@file %>
-  <div class='container'>
+  <%= @currentDirectory %>
   <% @folders.keys.each do |folder| %>
   <div class="btn-group btn-group-justified" role="group">
     <div class="btn-group" role="group">
-      <%= link_to "#{folder}", {path: @currentDirectory + "/" + folder.chomp, mode: 'display'}, class: 'btn btn-default' %>
+      <%= link_to "#{folder}", {path: @currentDirectory + "/" + folder.chomp, mode: 'display'}, class: 'btn btn-default' if !folder.include?('.xml')%>
     </div>
   </div>
   <% end %>
-  </div>
 <% else %>
 <%= render "layouts/letter_display" if @file %>
 <% end %>
