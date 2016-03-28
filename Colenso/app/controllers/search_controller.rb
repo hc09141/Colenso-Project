@@ -5,18 +5,26 @@ class SearchController < ApplicationController
 
   def index
     if params[:query] && !params[:query].empty?
-        @data = params[:query]
-        @searchType = params[:searchType]
-        @searchType = 'Text' if !@searchType || @searchType.empty?
-        @searchTime = Time.now
-        @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
-        current_user.queries.create(content: @data)
-        @resultsCount = @basexQuery.count / 3 if @basexQuery
-        @searchTime = Time.now - @searchTime
+      @data = params[:query]
+      @searchType = params[:searchType]
+      @searchType = 'Text' if !@searchType || @searchType.empty?
+      @searchTime = Time.now
+      @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
+      query = current_user.queries.create(content: @data, parentQuery_id: params[:parent]) if params[:parent] && params[:commit] == "Nested Search"
+      query = current_user.queries.create(content: @data) if !params[:parent] || params[:commit] == "New Search"
+      @queries = getNestQueries(query, [])
+      @parentID = query.id
+      @resultsCount = @basexQuery.count / 3 if @basexQuery
+      @searchTime = Time.now - @searchTime
     elsif params[:path]
       @file = QueryBasex.new(nil, nil, params[:path], nil).display
-      byebug
     end
+  end
+
+  def getNestQueries(query, queries
+    queries << query.content
+    return queries unless query.parentQuery_id
+    getNestQueries(Query.find(query.parentQuery_id), queries)
   end
 
   def create
@@ -25,8 +33,7 @@ class SearchController < ApplicationController
       send_file file.path, type: 'application/zip', disposition: 'attachment', filename: 'search-results.zip'
       file.close
     else
-      send_data @file, filename: "#{params[:path].split('/').last}"
+      send_data @file, filename: params[:path].split('/').last.to_s
     end
   end
-
 end

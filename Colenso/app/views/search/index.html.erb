@@ -1,5 +1,6 @@
 <search>
   <%= form_tag("/search", method: :get, id: "browse_bar") do %>
+  <%= hidden_field_tag :parent, @parentID if @parentID %>
   <div class="panel-body">
     <div class="col-lg-6">
       <div class="input-group">
@@ -31,7 +32,13 @@
 
   <% if params[:query] && !params[:query].empty? %>
   <div class='container'>
-    <%= "Showing #{@resultsCount} results for '#{params[:query]}' (#{@searchTime} seconds)" if params[:query] && @basexQuery && !@basexQuery.empty?  %>
+    <% if params[:query] && @basexQuery && !@basexQuery.empty?  %>
+    <%= "Showing #{@resultsCount} results for" %>
+    <% @queries.each do |q| %>
+    <%= q == @queries.last ? "'#{q}'" : "'#{q}' and " %>
+    <% end %>
+    <%= "(#{@searchTime} seconds)" %>
+    <% end %>
     <%= "There are no results for '#{params[:query]}'" if params[:query] && (!@basexQuery || @basexQuery.empty?) %>
   </div>
 
