@@ -14,10 +14,7 @@ class QueryBasex
     search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
     for $file in collection('Colenso_TEIs') "
     @input.each do |q|
-      one = formTextQuery(q)
-      byebug
-      search << one if @searchType == 'Text'
-      byebug
+      search << formTextQuery(q) if @searchType == 'Text'
       search << formXPathQuery(q) if @searchType == 'xPath'
       search << formXQuery(q) if @searchType == 'xQuery'
     end
@@ -101,13 +98,11 @@ class QueryBasex
   def call
     textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
      for $file score $score in collection('Colenso_TEIs') "
-    @input.each do |q|
-      textSearch << formTextQuery(q) if @searchType == 'Text'
-      textSearch << formXPathQuery(q) if @searchType == 'xPath'
-      textSearch << formXQuery(q) if @searchType == 'xQuery'
+    @input.each_slice(2) do |q, searchType|
+      textSearch << formTextQuery(q) if searchType == 'Text'
+      textSearch << formXPathQuery(q) if searchType == 'xPath'
+      textSearch << formXQuery(q) if searchType == 'xQuery'
     end
-
-    byebug
 
     textSearch << "order by $score descending
     return (<result>

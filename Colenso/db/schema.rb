@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327093036) do
+ActiveRecord::Schema.define(version: 20160328225022) do
 
   create_table "queries", force: :cascade do |t|
     t.string   "content"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160327093036) do
     t.datetime "updated_at",     null: false
     t.integer  "user_id"
     t.integer  "parentQuery_id"
+    t.string   "searchType"
   end
 
   add_index "queries", ["parentQuery_id"], name: "index_queries_on_parentQuery_id"
