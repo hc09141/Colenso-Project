@@ -8,20 +8,20 @@ class SearchController < ApplicationController
       @data = params[:query]
       @searchType = params[:searchType]
       @searchType = 'Text' if !@searchType || @searchType.empty?
-      @searchTime = Time.now
-      @basexQuery = QueryBasex.new(@data, @searchType, nil, nil).call
       query = current_user.queries.create(content: @data, parentQuery_id: params[:parent]) if params[:parent] && params[:commit] == "Nested Search"
       query = current_user.queries.create(content: @data) if !params[:parent] || params[:commit] == "New Search"
       @queries = getNestQueries(query, [])
+      @searchTime = Time.now
+      @basexQuery = QueryBasex.new(@queries, @searchType, nil, nil).call
       @parentID = query.id
-      @resultsCount = @basexQuery.count / 3 if @basexQuery
+      @resultsCount = @basexQuery.count / 4 if @basexQuery
       @searchTime = Time.now - @searchTime
     elsif params[:path]
       @file = QueryBasex.new(nil, nil, params[:path], nil).display
     end
   end
 
-  def getNestQueries(query, queries
+  def getNestQueries(query, queries)
     queries << query.content
     return queries unless query.parentQuery_id
     getNestQueries(Query.find(query.parentQuery_id), queries)

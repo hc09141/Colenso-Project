@@ -11,9 +11,20 @@ class QueryBasex
   end
 
   def bulkDownload
-    search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';"
-    search << "let $files:= #{formTextQuery(true)}" if @searchType == 'Text'
-    search << "let $files:= #{formXQuery(true)}" if @searchType == 'xQuery'
+    search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
+    for $file in collection('Colenso_TEIs') "
+    @input.each do |q|
+      one = formTextQuery(q)
+      byebug
+      search << one if @searchType == 'Text'
+      byebug
+      search << formXPathQuery(q) if @searchType == 'xPath'
+      search << formXQuery(q) if @searchType == 'xQuery'
+    end
+
+    search << "return <result><name>{file:name(db:path($file))}</name>
+    <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
+  return $files"
 
     t = Tempfile.new('search-results')
     Zip::OutputStream.open(t.path) do |zos|
@@ -66,70 +77,67 @@ class QueryBasex
   end
 
   def list
-    begin
-      puts @directory.to_s
-      if @directory && !@directory.empty?
-        listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
-      else
-        listCommand = "XQUERY db:list('Colenso_TEIs')"
-      end
-
-      # Gets results
-      list = @session.execute(listCommand).split("\n")
-      @session.close
-      puts @directory.to_s
-      puts list
-
-      parser = FolderParser.new(@directory, list).parse
-      return parser
-
-    rescue Exception => e
-      # print exception
-      puts e
+    puts @directory.to_s
+    if @directory && !@directory.empty?
+      listCommand = "XQUERY db:list('Colenso_TEIs', '#{@directory}')"
+    else
+      listCommand = "XQUERY db:list('Colenso_TEIs')"
     end
+
+    # Gets results
+    list = @session.execute(listCommand).split("\n")
+    @session.close
+    puts @directory.to_s
+    puts list
+
+    parser = FolderParser.new(@directory, list).parse
+    return parser
+
+  rescue Exception => e
+    # print exception
+    puts e
   end
 
   def call
-    begin
-      textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0'; "
-      textSearch << formTextQuery(false) if @searchType == 'Text'
-      textSearch << formXPathQuery(false) if @searchType == 'xPath'
-      textSearch << formXQuery(false) if @searchType == 'xQuery'
-      puts textSearch
-      results = []
-
-      query = @session.query(textSearch)
-      results.push(query.next) while query.more
-      query.close
-      @session.close
-
-      return results
-    rescue Exception => e
-      # print exception
-      puts e
+    textSearch = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
+     for $file score $score in collection('Colenso_TEIs') "
+    @input.each do |q|
+      textSearch << formTextQuery(q) if @searchType == 'Text'
+      textSearch << formXPathQuery(q) if @searchType == 'xPath'
+      textSearch << formXQuery(q) if @searchType == 'xQuery'
     end
+
+    byebug
+
+    textSearch << "order by $score descending
+    return (<result>
+       <name>{$file//title}</name>
+       <path>{db:path($file)}</path>
+       <author> by {($file//author)[1]//text()}</author>
+       <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
+       </result>)//text()"
+
+    puts textSearch
+
+    results = []
+
+    query = @session.query(textSearch)
+    results.push(query.next) while query.more
+    query.close
+    @session.close
+
+    return results
+  rescue Exception => e
+    # print exception
+    puts e
   end
 
-  def formXPathQuery(returnFile)
-    search = "for $file in collection('Colenso_TEIs') where
-        $file#{@input} "
-      if !returnFile
-        search << "return (<result>
-        <name>{$file//title}</name>
-        <path>{db:path($file)}</path>
-        <author> by {($file//author)[1]//text()}</author>
-        <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
-        </result>)//text()"
-      else
-        search << "return <result><name>{file:name(db:path($file))}</name>
-        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
-      return $files"
-      end
-      search
+  def formXPathQuery(query)
+    search = " where $file#{query} "
   end
 
-  def formTextQuery(returnFile)
-    words = @input.split(' ')
+  def formTextQuery(query)
+    words = query.split(' ')
     phrase = ''
     phrases = []
 
@@ -147,10 +155,7 @@ class QueryBasex
     phrases.push("'#{phrase}' ") unless phrase.empty?
 
     # Forms xQuerySearch
-
-    textSearch = "for $file score $score in collection('Colenso_TEIs')
-    [.contains text "
-
+    textSearch = 'where $file[.contains text '
     phrases.each do |p|
       textSearch << case p
                     when 'AND '
@@ -162,40 +167,14 @@ class QueryBasex
                     else
                       p
                     end
+      textSearch << 'using wildcards] '
     end
-
-    if !returnFile
-      textSearch << "using wildcards]
-      order by $score descending
-      return (<result>
-         <name>{$file//title}</name>
-         <path>{db:path($file)}</path>
-         <author> by {($file//author)[1]//text()}</author>
-         <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
-         </result>)//text()"
-    else
-      textSearch << "using wildcards]
-        order by $score descending
-        return <result><name>{file:name(db:path($file))}</name>
-        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
-      return $files"
-    end
+    textSearch
   end
 
-  def formXQuery(returnFile)
-    xQuerySearch = "for $file in collection('Colenso_TEIs') "
-    xQuerySearch << @input.to_s
-    if !returnFile
-      xQuerySearch << " return (<result>
-      <name>{$file//title}</name>
-      <path>{db:path($file)}</path>
-      <author> by {($file//author)[1]//text()}</author>
-      <excerpt>{fn:substring($file//body,0,200)}...</excerpt>
-      </result>)//text()"
-    else
-      xQuerySearch << " return <result><name>{file:name(db:path($file))}</name>
-        <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
-      return $files"
-    end
+  def formXQuery(query)
+    byebug
+    xQuerySearch = ' where '
+    xQuerySearch << "#{query} "
   end
 end
