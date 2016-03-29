@@ -1,8 +1,8 @@
 
 <div class='well col-xs-12'>
-  for $file in collection('Colenso_TEIs')
+  for $file in collection('Colenso_TEIs') where
   <div class="input-group">
-      <%= text_area_tag 'xQuery', 'where', class:'well well-lg col-xs-12', style:"height:60vh" %>
+      <%= text_area_tag 'query', nil, class:'well well-lg col-xs-12', style:"width:60vh" %>
   </div>
   return (<result>
         {$file//title}
