@@ -144,7 +144,7 @@ class QueryBasex
 
     # Splits up phrases and operators
     words.each do |word|
-      if word == 'ADD' || word == 'OR' || word == 'NOT'
+      if word == 'AND' || word == 'OR' || word == 'NOT'
         phrases.push("'#{phrase}' ") unless phrase.empty?
         phrases.push("#{word} ")
         phrase = ''
@@ -168,8 +168,8 @@ class QueryBasex
                     else
                       p
                     end
+                end
       textSearch << 'using wildcards] '
-    end
     textSearch
   end
 
