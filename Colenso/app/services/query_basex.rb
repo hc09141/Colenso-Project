@@ -13,15 +13,17 @@ class QueryBasex
   def bulkDownload
     search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
     for $file in collection('Colenso_TEIs') "
-    @input.each do |q|
-      search << formTextQuery(q) if @searchType == 'Text'
-      search << formXPathQuery(q) if @searchType == 'xPath'
-      search << formXQuery(q) if @searchType == 'xQuery'
+    @input.each_slice(2) do |q, s|
+      byebug
+      search << formTextQuery(q) if s == 'Text'
+      search << formXPathQuery(q) if s == 'xPath'
+      search << formXQuery(q) if s == 'xQuery'
     end
 
     search << "return <result><name>{file:name(db:path($file))}</name>
-    <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()
-  return $files"
+    <path>{file:resolve-path(db:path($file), 'C:/Users/Hannah/My Documents/2016/SWEN303/Colenso_TEIs/')}</path></result>//text()"
+
+  puts search
 
     t = Tempfile.new('search-results')
     Zip::OutputStream.open(t.path) do |zos|
