@@ -26,47 +26,49 @@
       <%= label_tag(:xQuery, "xQuery") %>
   </div>
   <% end %>
+  <% byebug %>
 
   <% if @data && !@data.empty? %>
   <div class='container'>
     <% if @data && @basexQuery && !@basexQuery.empty?  %>
-    <%= "Showing #{@resultsCount} results for" %>
+      <%= "Showing #{@resultsCount} results for" %>
       <% display = "" %>
-    <% @queries.each_slice(2) do |q, search| %>
-    <% display << "'#{q}' and " %>
-    <% end %>
-    <% 4.times do display.chop! end %>
-    <%= display %>
-    <%= "(#{@searchTime} seconds)" %>
+      <% @queries.each_slice(2) do |q, search| %>
+        <% display << "'#{q}' and " %>
+      <% end %>
+      <% 4.times do display.chop! end %>
+      <%= display %>
+      <%= "(#{@searchTime} seconds)" %>
     <% end %>
     <%= "There are no results for '#{params[:query]}'" if @data && (!@basexQuery || @basexQuery.empty?) %>
   </div>
+  <% end %>
+
 
   <div class="panel-body">
     <%= render "layouts/letter_display" if @file %>
     <% if @basexQuery && !@basexQuery.empty? && !@file %>
-    <%= button_to "Download Results", {query: @data, searchType: params[:searchType], mode: 'download'}, class: 'btn btn-default' %>
-    <div class="well">
-      <ul class="list-group">
-        <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
-        <li class="list-group-item">
-          <div>
-            <%= link_to "#{title}", path: path, mode: 'display' %>
-            <%= "#{author}" %>
-          </div>
-          <div>
-            <%= "\n#{excerpt}" %>
-          </div>
-          <div class='path'>
-            <%= "#{path}" %>
-          </div>
-        </li>
-        <% end %>
-      </ul>
+      <%= button_to "Download Results", {query: @data, searchType: params[:searchType], mode: 'download'}, class: 'btn btn-default' %>
+      <div class="well">
+        <ul class="list-group">
+          <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>
+            <li class="list-group-item">
+              <div>
+                <%= link_to "#{title}", path: path, mode: 'display' %>
+                <%= "#{author}" %>
+              </div>
+              <div>
+                <%= "\n#{excerpt}" %>
+              </div>
+              <div class='path'>
+                <%= "#{path}" %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
       <% end %>
     </div>
   </div>
-  <% end %>
 
   <script>
     $('#browse_bar input').on('change', function () {
