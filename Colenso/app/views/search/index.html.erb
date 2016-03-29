@@ -48,9 +48,12 @@
   <div class='container'>
     <% if params[:query] && @basexQuery && !@basexQuery.empty?  %>
     <%= "Showing #{@resultsCount} results for" %>
-    <% @queries.each do |q| %>
-    <%= q == @queries.last ? "'#{q}'" : "'#{q}' and " %>
+      <% display = "" %>
+    <% @queries.each_slice(2) do |q, search| %>
+    <% display << "'#{q}' and " %>
     <% end %>
+    <% 4.times do display.chop! end %>
+    <%= display %>
     <%= "(#{@searchTime} seconds)" %>
     <% end %>
     <%= "There are no results for '#{params[:query]}'" if params[:query] && (!@basexQuery || @basexQuery.empty?) %>
