@@ -8,6 +8,6 @@ class EditController < ApplicationController
 
   def create
     QueryBasex.new(nil, nil, params[:path], params[:file]).editLetter
-    redirect_to controller: 'search', action: 'index', mode: 'display', path: params[:path]
+    redirect_to controller: 'browse', action: 'index', mode: 'display', path: params[:path]
   end
 end

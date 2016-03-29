@@ -67,7 +67,7 @@
               <ul>
                 <% @users.each do |u| %>
                 <h4 style="text-align: center;">
-                  <%='Searches by #{u.name}' %></h4>
+                  <%="Searches by #{u.email}"%></h4>
                     <table class="table">
                     <thead>
                       <tr>
@@ -84,6 +84,7 @@
                         <td><%= q.content %></td>
                       </tr>
                       <% end %>
+                    </table>
                     <% end %>
                   </ul>
                 </div>

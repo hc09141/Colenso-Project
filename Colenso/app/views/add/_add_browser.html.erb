@@ -4,7 +4,7 @@
   <li><%= link_to "Colenso_TEIs" %></li>
   <% @currentDirectory.split('/').each do |dir| %>
   <% if !dir.empty? %>
-  <li><%= link_to "#{dir}", path: "#{@currentDirectory.split(dir).first}#{dir}" %></li>
+    <li><%= link_to "#{dir}", path: "#{@currentDirectory.split(dir).first}#{dir}" %></li>
   <% end %>
   <% end %>
 </ol>

@@ -16,6 +16,7 @@
       <h1 style="text-align: center;">
         Choose a file to upload
       </h1>
+      <submit>
       <div class="btn-group btn-group-justified" role="group">
         <div class="btn-group" role="group">
           <%= file_field_tag 'upload', accept: 'text/xml' %>
@@ -24,6 +25,7 @@
           <%= submit_tag "Add new letter", class: "btn btn-default" %>
         </div>
       </div>
+    </submit>
       <%= hidden_field_tag :stage, 'add' %>
       <%= hidden_field_tag :path, params[:path] %>
       <% end %>
