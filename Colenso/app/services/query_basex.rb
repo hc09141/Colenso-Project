@@ -52,10 +52,10 @@ class QueryBasex
       @session.execute("XQUERY validate:xsd(#{@newLetter}, 'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd')")
       @session.execute("XQUERY db:replace('Colenso_TEIs', '#{@directory}', " + @newLetter + ')')
     rescue Exception => e
-      # print exception
-      puts e
+      return false
     end
     @session.close
+    return true
   end
 
   def browse
