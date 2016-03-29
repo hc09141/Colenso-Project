@@ -1,9 +1,16 @@
 <% if !@file %>
-  <%= @currentDirectory %>
+  <ol class="breadcrumb">
+  <li><%= link_to "Colenso_TEIs" %></li>
+  <% @currentDirectory.split('/').each do |dir| %>
+  <% if !dir.empty? %>
+  <li><%= link_to "#{dir}", path: "#{@currentDirectory.split(dir).first}#{dir}" %></li>
+  <% end %>
+  <% end %>
+</ol>
   <% @folders.keys.each do |folder| %>
   <div class="btn-group btn-group-justified" role="group">
     <div class="btn-group" role="group">
-      <%= link_to "#{folder}", {path: @currentDirectory + "/" + folder.chomp, mode: 'display'}, class: 'btn btn-default' if !folder.include?('.xml')%>
+      <%= link_to "#{folder}", {path: @currentDirectory + "/" + folder.chomp, mode: 'display'}, class: 'btn btn-default' %>
     </div>
   </div>
   <% end %>
