@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-            <% current_user.queries.each do |q| %>
+            <% current_user.queries.reverse.each do |q| %>
             <tr>
               <td><%= q.created_at.to_date %></td>
               <td><%= q.created_at.to_s(:time) %></td>
@@ -53,7 +53,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @queries.each do |q| %>
+                <% @queries.reverse.each do |q| %>
                 <tr>
                   <td><%= q.created_at.to_date %></td>
                   <td><%= q.created_at.to_s(:time) %></td>
@@ -77,7 +77,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% u.queries.each do |q| %>
+                      <% u.queries.reverse.each do |q| %>
                       <tr>
                         <td><%= q.created_at.to_date %></td>
                         <td><%= q.created_at.to_s(:time) %></td>
