@@ -27,9 +27,9 @@
   </div>
   <% end %>
 
-  <% if params[:query] && !params[:query].empty? %>
+  <% if @data && !@data.empty? %>
   <div class='container'>
-    <% if params[:query] && @basexQuery && !@basexQuery.empty?  %>
+    <% if @data && @basexQuery && !@basexQuery.empty?  %>
     <%= "Showing #{@resultsCount} results for" %>
       <% display = "" %>
     <% @queries.each_slice(2) do |q, search| %>
@@ -39,13 +39,13 @@
     <%= display %>
     <%= "(#{@searchTime} seconds)" %>
     <% end %>
-    <%= "There are no results for '#{params[:query]}'" if params[:query] && (!@basexQuery || @basexQuery.empty?) %>
+    <%= "There are no results for '#{params[:query]}'" if @data && (!@basexQuery || @basexQuery.empty?) %>
   </div>
 
   <div class="panel-body">
     <%= render "layouts/letter_display" if @file %>
     <% if @basexQuery && !@basexQuery.empty? && !@file %>
-    <%= button_to "Download Results", {query: params[:query], searchType: params[:searchType], mode: 'download'}, class: 'btn btn-default' %>
+    <%= button_to "Download Results", {query: @data, searchType: params[:searchType], mode: 'download'}, class: 'btn btn-default' %>
     <div class="well">
       <ul class="list-group">
         <% @basexQuery.each_slice(4) do |title, path, author, excerpt| %>

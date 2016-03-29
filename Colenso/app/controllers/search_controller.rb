@@ -4,8 +4,10 @@ class SearchController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if params[:query] && !params[:query].empty?
+    if (params[:query]  && !params[:query].empty?) || (params[:xquery] && !params[:xquery].empty?)
       @data = params[:query]
+      @data ||= params[:xquery]
+      @data = params[:xquery] if @data.empty?
       @searchType = params[:searchType]
       @searchType = 'Text' if !@searchType || @searchType.empty?
       query = current_user.queries.create(content: @data, searchType: @searchType, parentQuery_id: params[:parent]) if params[:parent] && params[:commit] == "Nested Search"

@@ -14,7 +14,6 @@ class QueryBasex
     search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
     for $file in collection('Colenso_TEIs') "
     @input.each_slice(2) do |q, s|
-      byebug
       search << formTextQuery(q) if s == 'Text'
       search << formXPathQuery(q) if s == 'xPath'
       search << formXQuery(q) if s == 'xQuery'
