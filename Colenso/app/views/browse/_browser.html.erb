@@ -1,4 +1,5 @@
 <% if !@file %>
+    <div class = 'well'>
   <ol class="breadcrumb">
   <li><%= link_to "Colenso_TEIs" %></li>
   <% @currentDirectory.split('/').each do |dir| %>
@@ -7,6 +8,8 @@
   <% end %>
   <% end %>
 </ol>
+</div>
+  <div class = 'well'>
   <% @folders.keys.each do |folder| %>
   <div class="btn-group btn-group-justified" role="group">
     <div class="btn-group" role="group">
@@ -14,6 +17,7 @@
     </div>
   </div>
   <% end %>
+</div>
 <% else %>
 <%= render "layouts/letter_display" if @file %>
 <% end %>

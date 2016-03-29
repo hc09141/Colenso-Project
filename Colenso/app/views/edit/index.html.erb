@@ -4,8 +4,8 @@
     <%= form_tag("/edit", action: :create, method: :post, id: "edit_box") do %>
     <%= hidden_field_tag 'path', @path %>
     <%= text_area_tag 'file', "#{@file}", class:'well well-lg col-xs-12', style:"height:60vh" %>
-    <%= submit_tag "Save" %>
-    <%= link_to "Cancel", mode: "display", path: params[:path] %>
+    <%= submit_tag "Save", class: " btn btn-default" %>
+    <%= link_to "Cancel", {controller: 'browse', mode: "display", path: params[:path]}, class: 'btn btn-default' %>
     <% end %>
   </div>
 </div>

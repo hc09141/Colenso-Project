@@ -1,19 +1,25 @@
 <display>
-  <div class='container'>
-
-    <div class="btn-group btn-group-justified" role="group">
-      <div class="btn-group" role="group">
-        <%= button_to "Download", {action: :create, path: params[:path]}, class: 'btn btn-default' if params[:mode] == 'display' %>
+  <div class='container-fluid'>
+    <div class='container'>
+      <div class='col-md-6'>
+        <div class="btn-group btn-group-justified" role="group">
+          <div class="btn-group" role="group">
+            <%  if params[:mode] == 'display' %>
+            <%= button_to "Download", {action: :create, path: params[:path]}, class: 'btn btn-default' %>
+            <% end %>
+          </div>
+          <div class="btn-group" role="group">
+            <%= link_to "<i class='glyphicon glyphicon-pencil'></i> Edit".html_safe, {mode: "edit", path: params[:path], controller: "edit", id: 'editor'}, class: 'btn btn-default' if params[:mode] == 'display'%>
+          </div>
+        </div>
       </div>
-      <div class="btn-group" role="group">
-        <%= link_to "<i class='glyphicon glyphicon-pencil'></i> Edit".html_safe, {mode: "edit", path: params[:path], controller: "edit", id: 'editor'}, class: 'btn btn-default' if params[:mode] == 'display'%>
+      <% if params[:mode] == 'display' %>
+      <div class='container-fluid'>
+        <div class="well">
+          <%= raw "#{@file}" %>
+        </div>
       </div>
+      <% end %>
     </div>
-
-<% if params[:mode] == 'display' %>
-<div class="well">
-  <%= raw "#{@file}" %>
-</div>
-<% end %>
-</div>
+  </div>
 </display>
