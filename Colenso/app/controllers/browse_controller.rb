@@ -11,6 +11,7 @@ class BrowseController < ApplicationController
   end
 
   def create
+    @file = QueryBasex.new(nil, nil, params[:path], nil).display
     send_data @file, filename: "#{params[:path].split('/').last}"
   end
 
