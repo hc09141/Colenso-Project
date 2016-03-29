@@ -11,6 +11,9 @@
           <div class="btn-group" role="group">
             <%= link_to "<i class='glyphicon glyphicon-pencil'></i> Edit".html_safe, {mode: "edit", path: params[:path], controller: "edit", id: 'editor'}, class: 'btn btn-default' if params[:mode] == 'display'%>
           </div>
+          <div class="btn-group" role="group">
+            <%= button_to "Delete", {action: :create, path: params[:path], mode: 'delete'}, class: 'btn btn-default' %>
+          </div>
         </div>
       </div>
       <% if params[:mode] == 'display' %>

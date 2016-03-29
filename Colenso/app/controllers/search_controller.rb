@@ -36,8 +36,12 @@ class SearchController < ApplicationController
       file = QueryBasex.new(queries, params[:searchType], nil, nil).bulkDownload
       send_file file.path, type: 'application/zip', disposition: 'attachment', filename: 'search-results.zip'
       file.close
+    elsif params[:mode] == 'delete'
+      QueryBasex.new(nil, nil, params[:path], nil).delete
+      redirect_to controller: 'browse', mode: 'display', path: params[:path].rpartition('/').first
     else
-      send_data @file, filename: params[:path].split('/').last.to_s
+      @file = QueryBasex.new(nil, nil, params[:path], nil).display
+      send_data @file, filename: "#{params[:path].split('/').last}"
     end
   end
 end

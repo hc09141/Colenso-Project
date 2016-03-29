@@ -10,6 +10,11 @@ class QueryBasex
     @newLetter = newLetter
   end
 
+  def delete
+    @session.execute("XQUERY db:delete('Colenso_TEIs', '#{@directory}')")
+    @session.close
+  end
+
   def bulkDownload
     search = "declare default element namespace 'http://www.tei-c.org/ns/1.0';
     for $file in collection('Colenso_TEIs') "
