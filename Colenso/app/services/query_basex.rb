@@ -168,7 +168,6 @@ class QueryBasex
   end
 
   def formXQuery(query)
-    byebug
     xQuerySearch = ' where '
     xQuerySearch << "#{query} "
   end

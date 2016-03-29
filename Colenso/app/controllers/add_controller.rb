@@ -10,7 +10,6 @@ class AddController < ApplicationController
  end
 
   def create
-    byebug
     if params[:stage] == 'add'
       @newLetter = params[:upload].original_filename
       @input = params[:upload].read

@@ -2,29 +2,38 @@
   <%= form_tag({controller: 'add', method: :get}, {multipart: true}) do %>
   <div class='container'>
     <% if !params[:stage] %>
-    <div class='well'>
+    <h1 style="text-align: center;">
       Choose where to add to database
-      <%= render 'browse/browser' %>
-      <%= submit_tag "Next", class: "btn btn-default" %>
-      <%= hidden_field_tag :stage, 'browse' %>
-      <%= hidden_field_tag :path, params[:path] %>
-    </div>
+    </h1>
+    <%= render 'add/add_browser' %>
+    <%= submit_tag "Next", class: "btn btn-default" %>
+    <%= hidden_field_tag :stage, 'browse' %>
+    <%= hidden_field_tag :path, params[:path] %>
     <% end %>
 
     <% if params[:stage] == 'browse' %>
     <div class='well'>
-      Choose a file to upload
-      <%= file_field_tag 'upload', accept: 'text/xml' %>
-      <%= submit_tag "Add new letter", class: "btn btn-default" %>
+      <h1 style="text-align: center;">
+        Choose a file to upload
+      </h1>
+      <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group" role="group">
+          <%= file_field_tag 'upload', accept: 'text/xml' %>
+        </div>
+        <div class="btn-group" role="group">
+          <%= submit_tag "Add new letter", class: "btn btn-default" %>
+        </div>
+      </div>
       <%= hidden_field_tag :stage, 'add' %>
       <%= hidden_field_tag :path, params[:path] %>
+      <% end %>
+
+      <% if params[:stage] == 'add' %>
+      <h1 style="text-align: center;"><%= "Successfully added to database!" %></h1>
+      <div class="text-center">
+      <%= submit_tag "Add new letter", upload: params[:upload], class: "btn btn-lg "%>
+    </div>
+      <% end %>
     </div>
     <% end %>
-
-    <% if params[:stage] == 'add' %>
-    <%= "Successfully added to database!" %>
-    <%= submit_tag "Add new letter", upload: params[:upload], class: "btn btn-default" %>
-    <% end %>
-  </div>
-  <% end %>
-</add>
+  </add>

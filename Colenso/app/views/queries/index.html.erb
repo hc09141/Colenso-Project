@@ -15,43 +15,79 @@
     <div>
       <% if !params[:option] || params[:option] == 'current' %>
       <% if signed_in? %>
-      <%= "Showing searches for #{@username}" %>
       <div class='well'>
-        <ul>
-          <% current_user.queries.each do |q| %>
-          <li><%= "#{q.created_at}   #{q.content}" %></li>
-          <% end %>
-        </div>
-      </ul>
-    <% else %>
-      You are not logged in, to see your searches please log in
-      <% end %>
-
-      <% elsif params[:option] == 'all-time' %>
-      <div class='well'>
-        <ul>
-          <% @queries.each do |q| %>
-          <li><%= "#{q.created_at}   #{q.content}" %></li>
-          <% end %>
-        </ul>
-      </div>
-
-      <% elsif params[:option] == 'all-user' %>
-      <div class='well'>
-        <ul>
-          <% @users.each do |u| %>
-          <%= 'Searches by #{u.name}' %>
-          <ul>
-            <% u.queries.each do |q| %>
-            <li>
-              <%= "#{q.created_at}   #{q.content}" %>
-            </li>
+        <h2 style="text-align: center;">
+          <%= "Showing searches for #{@username}" %>
+        </h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Search</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.queries.each do |q| %>
+            <tr>
+              <td><%= q.created_at.to_date %></td>
+              <td><%= q.created_at.to_s(:time) %></td>
+              <td><%= q.content %></td>
+            </tr>
             <% end %>
-          </ul>
-          <% end %>
-      </ul>
-    </div>
-    <% end %>
-  </div>
-</div>
-</queries>
+          </tbody>
+        </table>
+
+      <% else %>
+        You are not logged in, to see your searches please log in
+        <% end %>
+
+        <% elsif params[:option] == 'all-time' %>
+        <div class='well'>
+          <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Search</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @queries.each do |q| %>
+                <tr>
+                  <td><%= q.created_at.to_date %></td>
+                  <td><%= q.created_at.to_s(:time) %></td>
+                  <td><%= q.content %></td>
+                </tr>
+                <% end %>
+              </div>
+
+            <% elsif params[:option] == 'all-user' %>
+            <div class='well'>
+              <ul>
+                <% @users.each do |u| %>
+                <h4 style="text-align: center;">
+                  <%='Searches by #{u.name}' %></h4>
+                    <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Search</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% u.queries.each do |q| %>
+                      <tr>
+                        <td><%= q.created_at.to_date %></td>
+                        <td><%= q.created_at.to_s(:time) %></td>
+                        <td><%= q.content %></td>
+                      </tr>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </queries>

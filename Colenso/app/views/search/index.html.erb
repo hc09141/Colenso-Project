@@ -18,12 +18,26 @@
     </div>
 
     <div class="btn-group" role="group">
-      <%= radio_button_tag :searchType, "Text", true, class: "btn btn-default" %>
-      <%= label_tag :Text, 'Text' %>
-      <%= radio_button_tag :searchType, "xPath"  %>
-      <%= label_tag :xPath, 'xPath' %>
-      <%= radio_button_tag :searchType, "xQuery" %>
-      <%= label_tag :xQuery, 'xQuery' %>
+      <% if !params[:searchType] || params[:searchType] == 'Text' %>
+      <%= radio_button_tag(:searchType, "Text", true) %>
+    <% else %>
+      <%= radio_button_tag(:searchType, "Text") %>
+      <% end %>
+      <%= label_tag(:text, "Text") %>
+
+      <% if params[:searchType] && params[:searchType] == 'xPath' %>
+      <%= radio_button_tag(:searchType, "xPath", true) %>
+    <% else %>
+      <%= radio_button_tag(:searchType, "xPath") %>
+      <% end %>
+      <%= label_tag(:xPath, "xPath") %>
+
+      <% if params[:searchType] && params[:searchType] == 'xQuery' %>
+      <%= radio_button_tag(:searchType, "xQuery", true) %>
+    <% else %>
+      <%= radio_button_tag(:searchType, "xPath") %>
+      <% end %>
+      <%= label_tag(:xPath, "xQuery") %>
     </div>
 
     <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
